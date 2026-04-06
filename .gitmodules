@@ -13,3 +13,6 @@
 [submodule "05_Stockholm_Malware"]
 	path = 05_Stockholm_Malware
 	url = git@github.com:STC71/05_Stockholm_Malware.git
+[submodule "06_Iron_Dome_Malware_Optional"]
+	path = 06_Iron_Dome_Malware_Optional
+	url = git@github.com:STC71/06_Iron_Dome_Malware_Optional.git
