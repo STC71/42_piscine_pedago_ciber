@@ -4,3 +4,6 @@
 [submodule "02_ft_otp_OTP"]
 	path = 02_ft_otp_OTP
 	url = git@github.com:STC71/02_ft_otp_OTP.git
+[submodule "03_ft_onion_Web"]
+	path = 03_ft_onion_Web
+	url = git@github.com:STC71/03_ft_onion_Web.git
