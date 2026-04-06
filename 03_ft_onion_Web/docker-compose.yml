@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  ft_onion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    container_name: ${DOCKER_CONTAINER:-ft_onion}
+    
+    networks:
+      - tor_network
+    
+    ports:
+      - "4242:4242"  # Puerto SSH para administración remota (expuesto)
+      # El puerto 80 (HTTP) es solo interno, no se expone al host (acceso vía Tor)
+    
+    volumes:
+      # Persistencia de claves del servicio oculto Tor
+      - tor_hidden_service:/var/lib/tor/hidden_service
+      
+      # Persistencia del estado y datos de relay de Tor
+      - tor_data:/var/lib/tor
+      
+      # Almacenamiento de logs de la aplicación
+      - ft_onion_logs:/app/logs
+      
+      # Sobrescritura de archivos de configuración (opcional, descomentar para usar)
+      # - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./torrc:/etc/tor/torrc:ro
+      # - ./sshd_config:/etc/ssh/sshd_config:ro
+    
+    # Variables de entorno para el entorno de ejecución de Python
+    environment:
+      - PYTHONUNBUFFERED=1        # Desactiva el buffer de salida de Python para logs en tiempo real
+      - PYTHONDONTWRITEBYTECODE=1 # Evita la compilación de bytecode .pyc (contenedor más limpio)
+      - TZ=UTC                     # Zona horaria consistente para marcas de tiempo en logs
+    
+    # Política de reinicio: mantiene el contenedor activo y reinicia ante fallos
+    restart: unless-stopped
+    
+    # Verificación automática de salud del servicio
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health", "||", "exit", "1"]  # Comprueba disponibilidad de la ruta /health
+      interval: 30s        # Ejecuta la comprobación cada 30 segundos
+      timeout: 10s         # Tiempo máximo de espera por respuesta
+      retries: 3           # Marca error tras 3 fallos consecutivos
+      start_period: 40s    # Espera inicial antes de la primera comprobación
+    
+    # Opciones de seguridad: impide que el contenedor adquiera nuevos privilegios
+    security_opt:
+      - no-new-privileges:true
+    
+    # Límites de recursos: evita consumo ilimitado de CPU/RAM
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'       # Máximo: 1 CPU
+          memory: 512M      # Máximo: 512 MB de RAM
+        reservations:
+          cpus: '0.5'       # Garantizado: 0.5 CPU
+          memory: 256M      # Garantizado: 256 MB de RAM
+    
+    # Configuración de logging JSON para logs estructurados (tamaño y rotación)
+    logging:
+      driver: "json-file"  # Formato JSON para parseo automatizado de logs
+      options:
+        max-size: "10m"        # Máximo 10 MB por archivo de log
+        max-file: "3"          # Conserva como máximo 3 archivos rotados
+        labels: "service=ft_onion"  # Etiqueta para identificar logs
+
+# Red Docker personalizada para comunicación entre contenedores
+networks:
+  tor_network:
+    driver: bridge              # Aislamiento de red tipo puente
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16 # Subred dedicada para ft_onion
+
+# Volúmenes Docker para persistencia de datos entre reinicios
+volumes:
+  tor_hidden_service:  # Almacena claves privadas y dirección .onion
+    driver: local
+  tor_data:            # Almacena estado y caché de Tor
+    driver: local
+  ft_onion_logs:       # Almacena logs de aplicación y servicios
+    driver: local

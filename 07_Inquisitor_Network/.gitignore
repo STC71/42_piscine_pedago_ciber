@@ -1,0 +1,18 @@
+# PDF files
+*.pdf
+
+# Network captures
+*.pcap
+*.pcapng
+
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Results
+*.csv
+results/
+
+# Logs
+*.log

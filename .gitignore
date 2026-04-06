@@ -1,0 +1,25 @@
+# PDF files (keep locally, don't upload to GitHub)
+*.pdf
+
+# Compiled files
+*.o
+*.a
+*.so
+*.pyc
+__pycache__/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test outputs
+*.log
+*.tmp
+test_output/

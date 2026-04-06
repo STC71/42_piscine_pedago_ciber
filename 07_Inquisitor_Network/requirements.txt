@@ -1,0 +1,3 @@
+# Definimos las dependencias del proyecto de Python.
+# scapy: Librería muy potente para la manipulación, envío y rastreo de paquetes de red.
+scapy==2.5.0

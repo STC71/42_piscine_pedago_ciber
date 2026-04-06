@@ -1,0 +1,4 @@
+# Librería para procesamiento y manipulación de imágenes
+Pillow==10.4.0
+# Librería para lectura y escritura de datos EXIF en imágenes
+piexif==1.1.3

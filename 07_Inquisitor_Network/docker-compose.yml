@@ -1,0 +1,66 @@
+# Definición de los servicios (contenedores) que van a conformar nuestro entorno simulado
+services:
+  # Servicio que hará de atacante (donde ejecutaremos 'inquisitor')
+  attacker:
+    build:
+      # Contexto y Dockerfile para construir la imagen del atacante
+      context: .
+      dockerfile: Dockerfile
+    container_name: inquisitor_attacker
+    # privileged y cap_add NET_ADMIN son necesarios para manipular la red a bajo nivel
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+    networks:
+      # Asignamos el contenedor a la red virtual del proyecto y le damos una IP estática
+      inquisitor_net:
+        ipv4_address: 10.0.0.10
+    # Mantenemos el contenedor encendido (sin matar el proceso 1)
+    command: tail -f /dev/null
+    # Montamos el directorio actual en /workspace para desarrollo en tiempo real sin recompilar imagen
+    volumes:
+      - .:/workspace
+
+  # Servicio de servidor FTP, la víctima a la que se suben archivos
+  ftp_server:
+    image: fauria/vsftpd
+    container_name: inquisitor_ftp_server
+    environment:
+      # Credenciales del servidor FTP
+      FTP_USER: user
+      FTP_PASS: pass
+      # Rango de puertos pasivos para la transferencia de datos
+      PASV_MIN_PORT: 21100
+      PASV_MAX_PORT: 21110
+    networks:
+      inquisitor_net:
+        # IP estática del servidor de destino
+        ipv4_address: 10.0.0.20
+
+  # Cliente FTP, donde simularemos las transferencias al servidor (La víctima humana)
+  ftp_client:
+    # Usamos Debian "bullseye-slim" en lugar de Alpine porque los repositorios de Debian 
+    # contienen el cliente FTP clásico y compatible. Alpine genera incompatibilidades 
+    # de paquetes al intentar instalar 'ftp' directamente.
+    image: debian:bullseye-slim
+    container_name: inquisitor_ftp_client
+    # Ejecutamos bash para:
+    # 1. Actualizar el repositorio temporalmente.
+    # 2. Instalar ftp para conectarse, curl/ping para probar conectividad y procps.
+    # 3. Y ejecutar 'tail -f /dev/null' como proceso persistente evitando que el docker se apague.
+    command: >
+        bash -c "apt-get update && apt-get install -y ftp curl procps iputils-ping && tail -f /dev/null"
+    networks:
+      inquisitor_net:
+        # IP estática de origen
+        ipv4_address: 10.0.0.30
+
+# Definición de las redes virtuales
+networks:
+  # Creamos una red tipo 'bridge' (puente) para que interactúen los servicios
+  inquisitor_net:
+    driver: bridge
+    ipam:
+      config:
+        # Fijamos la subred general para tener control exacto de las direcciones IP de todos los contenedores
+        - subnet: 10.0.0.0/24
