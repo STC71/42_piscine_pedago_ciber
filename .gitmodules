@@ -10,3 +10,6 @@
 [submodule "04_Reverse_me_Rev"]
 	path = 04_Reverse_me_Rev
 	url = git@github.com:STC71/04_Reverse_me_Rev.git
+[submodule "05_Stockholm_Malware"]
+	path = 05_Stockholm_Malware
+	url = git@github.com:STC71/05_Stockholm_Malware.git
