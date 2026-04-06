@@ -1,24 +1,24 @@
 [submodule "01_arachnida_Web"]
 	path = 01_arachnida_Web
-	url = git@github.com:STC71/01_arachnida_Web.git
+	url = https://github.com/STC71/01_arachnida_Web.git
 [submodule "02_ft_otp_OTP"]
 	path = 02_ft_otp_OTP
-	url = git@github.com:STC71/02_ft_otp_OTP.git
+	url = https://github.com/STC71/02_ft_otp_OTP.git
 [submodule "03_ft_onion_Web"]
 	path = 03_ft_onion_Web
-	url = git@github.com:STC71/03_ft_onion_Web.git
+	url = https://github.com/STC71/03_ft_onion_Web.git
 [submodule "04_Reverse_me_Rev"]
 	path = 04_Reverse_me_Rev
-	url = git@github.com:STC71/04_Reverse_me_Rev.git
+	url = https://github.com/STC71/04_Reverse_me_Rev.git
 [submodule "05_Stockholm_Malware"]
 	path = 05_Stockholm_Malware
-	url = git@github.com:STC71/05_Stockholm_Malware.git
+	url = https://github.com/STC71/05_Stockholm_Malware.git
 [submodule "06_Iron_Dome_Malware_Optional"]
 	path = 06_Iron_Dome_Malware_Optional
-	url = git@github.com:STC71/06_Iron_Dome_Malware_Optional.git
+	url = https://github.com/STC71/06_Iron_Dome_Malware_Optional.git
 [submodule "07_Inquisitor_Network"]
 	path = 07_Inquisitor_Network
-	url = git@github.com:STC71/07_Inquisitor_Network.git
+	url = https://github.com/STC71/07_Inquisitor_Network.git
 [submodule "08_Vaccine_Web"]
 	path = 08_Vaccine_Web
-	url = git@github.com:STC71/08_Vaccine_Web.git
+	url = https://github.com/STC71/08_Vaccine_Web.git
