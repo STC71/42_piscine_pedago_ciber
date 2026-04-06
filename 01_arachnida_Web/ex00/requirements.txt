@@ -1,5 +1,0 @@
-# beautifulsoup4: Librería para parsear y navegar documentos HTML/XML
-beautifulsoup4==4.13.4
-
-# requests: Librería HTTP para realizar peticiones GET, POST, etc.
-requests==2.31.0
