@@ -16,3 +16,6 @@
 [submodule "06_Iron_Dome_Malware_Optional"]
 	path = 06_Iron_Dome_Malware_Optional
 	url = git@github.com:STC71/06_Iron_Dome_Malware_Optional.git
+[submodule "07_Inquisitor_Network"]
+	path = 07_Inquisitor_Network
+	url = git@github.com:STC71/07_Inquisitor_Network.git
